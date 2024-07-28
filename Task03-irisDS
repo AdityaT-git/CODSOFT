@@ -1,0 +1,35 @@
+import numpy as np
+import pandas as pd
+
+Flower_data = pd.read_csv(r'IRIS.csv')
+df = pd.DataFrame(Flower_data)
+df
+
+df.shape
+df.describe(include = 'all')
+df.shape
+df.info()
+
+df.isnull().sum() 
+df.duplicated().sum()
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+df_melted = df.melt(id_vars='species', var_name='variable', value_name='count')
+sns.boxplot(data=df_melted, x='species', y='count', hue='variable', palette='hls')
+plt.xlabel('Species')
+plt.ylabel('Count')
+plt.title('Count Distribution by Species')
+plt.show()
+sns.countplot(data=df, x='species', palette='hls')
+plt.xlabel('Species')
+plt.ylabel('Count')
+plt.title('Count of Species')
+plt.show()
+
+numeric_columns = df.select_dtypes(include='number')
+correlation_matrix = numeric_columns.corr()
+plt.figure(figsize=(8, 6))
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', linewidths=0.5)
+plt.title('Correlation Heatmap')
+plt.show()
