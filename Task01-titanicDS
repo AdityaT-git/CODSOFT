@@ -1,0 +1,69 @@
+import pandas as pd
+
+# Load the dataset (assuming it's named 'creditcard.csv')
+# You might need to adjust the file path accordingly
+df = pd.read_csv('creditcard.csv')
+
+# Display the first few rows and check for any missing values
+print(df.head())
+
+# Check the dataset information
+print(df.info())
+
+from sklearn.preprocessing import StandardScaler
+
+# Normalize the 'Amount' column
+scaler = StandardScaler()
+df['NormalizedAmount'] = scaler.fit_transform(df['Amount'].values.reshape(-1, 1))
+
+# Drop the original 'Time' and 'Amount' columns (if necessary)
+df = df.drop(['Time', 'Amount'], axis=1)
+
+# Display the updated dataset
+print(df.head())
+
+print(df['Class'].value_counts())
+from sklearn.model_selection import train_test_split
+
+X = df.drop('Class', axis=1)
+y = df['Class']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+
+# Initialize the model (e.g., Logistic Regression)
+model = LogisticRegression()
+
+# Or use Random Forest Classifier
+# model = RandomForestClassifier(n_estimators=100, random_state=42)
+
+# Train the model
+model.fit(X_train, y_train)
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+
+# Initialize the model (e.g., Logistic Regression)
+model = LogisticRegression()
+
+# Or use Random Forest Classifier
+# model = RandomForestClassifier(n_estimators=100, random_state=42)
+
+# Train the model
+model.fit(X_train, y_train)
+
+
+from sklearn.metrics import classification_report, confusion_matrix
+
+# Predict on the test set
+y_pred = model.predict(X_test)
+
+# Evaluate the model
+print("Classification Report:")
+print(classification_report(y_test, y_pred))
+
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
